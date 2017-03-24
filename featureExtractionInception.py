@@ -1,3 +1,6 @@
+"""
+DOWNLOAD THE INCEPTION MODEL BEFORE RUNNING!
+"""
 import os
 import re
 import tensorflow as tf
