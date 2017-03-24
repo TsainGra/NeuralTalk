@@ -3,7 +3,7 @@ DOWNLOAD THE INCEPTION MODEL BEFORE RUNNING!
 1. OPEN THE DIRECTORY WHICH CONTAINS YOUR PYTHON PACKAGAES
 2. GO TO /tensorflow/models/image/imagenet
 3. OPEN TERMINAL AND RUN
-	 cd tensorflow/models/image/imagenet python classify_image.py --model_dir TUTORIAL_DIR/imagenet
+	 cd python classify_image.py --model_dir TUTORIAL_DIR/imagenet
 4. THIS DOWNLOADS THE INCEPTION MODEL.
 5. PASTE THE 'imagenet' FILE IN THE SAME FOLDER WHICH CONATAINS THIS SCRIPT.
 
