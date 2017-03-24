@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import pickle
 
 model_dir = 'imagenet'
+#Directory to the folder which contains image
 images_dir = '/home/kushagra/Neuraltalk/'
 list_images = [images_dir+f for f in os.listdir(images_dir) if re.search('jpg|JPG', f)]
 
@@ -29,7 +30,7 @@ def extract_features(list_images):
 	labels = []
 	create_graph()
 	with tf.Session() as sess:
-		next_to_last_tensor = sess.graph.get_tensor_by_name('pool_3:1')
+		next_to_last_tensor = sess.graph.get_tensor_by_name('pool_3:0')
 		for ind, image in enumerate(list_images):
 			if (ind%100 == 0):
 				print('Processing %s...' % (image))
@@ -46,7 +47,7 @@ features, labels = extract_features(list_images)
 print features
 print labels
 print features.shape
-
+# Dimensionality reduction using TSNE from 2048 to 128
 model = TSNE(n_components=128, random_state=0)
 np.set_printoptions(suppress=True)
 print(model.fit_transform(features))
