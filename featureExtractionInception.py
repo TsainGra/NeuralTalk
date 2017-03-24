@@ -29,7 +29,7 @@ import pickle
 
 model_dir = 'imagenet'
 #Directory to the folder which contains image
-images_dir = '/home/kushagra/Neuraltalk/'
+images_dir = '/home/$USER/Neuraltalk/'
 list_images = [images_dir+f for f in os.listdir(images_dir) if re.search('jpg|JPG', f)]
 
 def create_graph():
