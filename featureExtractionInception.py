@@ -22,7 +22,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.svm import SVC, LinearSVC
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
-#% matplotlib inline
 import pickle
 
 model_dir = 'imagenet'
