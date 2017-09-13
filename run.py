@@ -20,7 +20,8 @@ d = {}
 for i, row in enumerate(captions):
     row = row.split('\t')
     row[0] = row[0][:len(row[0])-2]
-    if row[0] in d:
+    ## collect all captions belonging to same picture under same key
+    if row[0] in d:                 
         d[row[0]].append(row[1])
     else:
         d[row[0]] = [row[1]]
