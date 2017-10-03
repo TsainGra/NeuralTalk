@@ -28,6 +28,7 @@ for i, row in enumerate(captions):
 images = 'Flickr8k_Dataset/'
 # Contains all the images
 img = glob.glob(images+'*.jpg')
+img[:5]
 train_images_file = 'Flickr8k_text/Flickr_8k.trainImages.txt'
 train_images = set(open(train_images_file, 'r').read().strip().split('\n'))
 def split_data(l):
@@ -38,13 +39,16 @@ def split_data(l):
 # Getting the training images from all the images
 train_img = split_data(train_images)
 len(train_img)
+
 val_images_file = 'Flickr8k_text/Flickr_8k.devImages.txt'
 val_images = set(open(val_images_file, 'r').read().strip().split('\n'))
+
 # Getting the validation images from all the images
 val_img = split_data(val_images)
 len(val_img)
 test_images_file = 'Flickr8k_text/Flickr_8k.testImages.txt'
 test_images = set(open(test_images_file, 'r').read().strip().split('\n'))
+
 # Getting the testing images from all the images
 test_img = split_data(test_images)
 
@@ -97,6 +101,8 @@ for i in train_img:
     if i[len(images):] in d:
         train_d[i] = d[i[len(images):]]
 
+train_d[images+'3556792157_d09d42bef7.jpg']
+
 val_d = {}
 for i in val_img:
     if i[len(images):] in d:
@@ -122,13 +128,14 @@ unique = list(set(unique))
 # with open("unique.p", "wb") as pickle_d:
 #     pickle.dump(unique, pickle_d)
 
-# unique = pickle.load(open('unique.p', 'rb'))
+#unique = pickle.load(open('unique.p', 'rb'))
 
 #len(unique)
 
 word2idx = {val:index for index, val in enumerate(unique)}
-
+word2idx['<start>']
 idx2word = {index:val for index, val in enumerate(unique)}
+idx2word[5553]
 
 max_len = 0
 for c in caps:
@@ -158,6 +165,7 @@ len(c)
 imgs = [i for i in df['image_id']]
 
 a = c[-1]
+a, imgs[-1]
 
 for i in a.split():
     print (i, "=>", word2idx[i])
@@ -215,19 +223,7 @@ def data_generator(batch_size = 32):
                         count = 0
 
 # print(z)
-# print(len(z), " ", len(z)," ", len(z))
-# print(len(z[0]), " ",len(z[1]))
-# print(len(z[0][0]), " ", len(z[0][1], " ", len(z[1][0])))
-# print(len(z[0][0][0])," ", len(z[0][1][0]), " ", len(z[1][0][0]))
 
-
-
-
-
-
-# print(len(z[0][1][0][0]))
-# print(len(z[0][1][0][0][0]))
-# print(len(z[0][1][0][0][0][0]))
 
 embedding_size = 300
 
@@ -256,11 +252,11 @@ final_model = Sequential([
 final_model.compile(loss='categorical_crossentropy', optimizer=RMSprop(), metrics=['accuracy'])
 
 final_model.summary()
-final_model.fit_generator(data_generator(batch_size=256), steps_per_epoch=25,
-                                              nb_epoch=1,
+final_model.fit_generator(data_generator(batch_size=256), steps_per_epoch=1000,
+                                              nb_epoch=1, callbacks=0
                                               )
-#final_model.save_weights("model.h5")
-#final_model.load_weights("model.h5")
+final_model.save_weights("model.h5")
+final_model.load_weights("model.h5")
 
 
 def predict_captions(image):
@@ -321,25 +317,26 @@ def beam_search_predictions(image, beam_index=3):
 
     final_caption = ' '.join(final_caption[1:])
     return final_caption
-    try_image = test_img[0]
-    Image.open(try_image)
 
-    print ('Normal Max search:', predict_captions(try_image))
-    print ('Beam Search, k=3:', beam_search_predictions(try_image, beam_index=3))
-    print ('Beam Search, k=5:', beam_search_predictions(try_image, beam_index=5))
-    print ('Beam Search, k=7:', beam_search_predictions(try_image, beam_index=7))
+try_image = test_img[0]
+Image.open(try_image)
 
-    try_image2 = test_img[7]
-    Image.open(try_image2)
+print ('Normal Max search:', predict_captions(try_image))
+print ('Beam Search, k=3:', beam_search_predictions(try_image, beam_index=3))
+print ('Beam Search, k=5:', beam_search_predictions(try_image, beam_index=5))
+print ('Beam Search, k=7:', beam_search_predictions(try_image, beam_index=7))
 
-    print ('Normal Max search:', predict_captions(try_image2))
-    print ('Beam Search, k=3:', beam_search_predictions(try_image2, beam_index=3))
-    print ('Beam Search, k=5:', beam_search_predictions(try_image2, beam_index=5))
-    print ('Beam Search, k=7:', beam_search_predictions(try_image2, beam_index=7))
+try_image2 = test_img[7]
+Image.open(try_image2)
 
-    try_image3 = test_img[851]
-    Image.open(try_image3)
-    print ('Normal Max search:', predict_captions(try_image3))
-    print ('Beam Search, k=3:', beam_search_predictions(try_image3, beam_index=3))
-    print ('Beam Search, k=5:', beam_search_predictions(try_image3, beam_index=5))
-    print ('Beam Search, k=7:', beam_search_predictions(try_image3, beam_index=7))
+print ('Normal Max search:', predict_captions(try_image2))
+print ('Beam Search, k=3:', beam_search_predictions(try_image2, beam_index=3))
+print ('Beam Search, k=5:', beam_search_predictions(try_image2, beam_index=5))
+print ('Beam Search, k=7:', beam_search_predictions(try_image2, beam_index=7))
+
+try_image3 = test_img[851]
+Image.open(try_image3)
+print ('Normal Max search:', predict_captions(try_image3))
+print ('Beam Search, k=3:', beam_search_predictions(try_image3, beam_index=3))
+print ('Beam Search, k=5:', beam_search_predictions(try_image3, beam_index=5))
+print ('Beam Search, k=7:', beam_search_predictions(try_image3, beam_index=7))
