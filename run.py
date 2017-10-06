@@ -180,7 +180,7 @@ def data_generator(batch_size = 32):
         images = []
 
         df = pd.read_csv('flickr8k_training_dataset.txt', delimiter='\t')
-        df = df.sample(frac=1)
+        #df = df.sample(frac=1)
         iter = df.iterrows()
         c = []
         imgs = []
