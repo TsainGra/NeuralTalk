@@ -170,9 +170,9 @@ a, imgs[-1]
 for i in a.split():
     print (i, "=>", word2idx[i])
 
-    samples_per_epoch = 0
-    for ca in caps:
-        samples_per_epoch += len(ca.split()) - 1
+samples_per_epoch = 0
+for ca in caps:
+    samples_per_epoch += len(ca.split()) - 1
 
 def data_generator(batch_size = 32):
         partial_caps = []
