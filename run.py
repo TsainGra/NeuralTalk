@@ -1,10 +1,12 @@
 import glob
 from PIL import Image
 import numpy as np
-# import matplotlib.pyplot as plt
 import pickle
 from tqdm import tqdm
 import pandas as pd
+from keras.callbacks import Callback
+import matplotlib.pyplot as plt
+from keras.callbacks import History
 from keras.preprocessing import sequence
 from keras.models import Sequential
 from keras.layers import Add, LSTM, Embedding, TimeDistributed, Dense, RepeatVector, Activation, Flatten, Merge
@@ -14,7 +16,9 @@ from keras.layers.wrappers import Bidirectional
 from keras.applications.inception_v3 import InceptionV3
 from keras.preprocessing import image
 from keras.models import Model
-
+from keras.models import load_model
+from keras.utils import plot_model
+from IPython.display import clear_output
 token = 'Flickr8k_text/Flickr8k.token.txt'
 captions = open(token, 'r').read().strip().split('\n')
 d = {}
@@ -172,7 +176,7 @@ for i in a.split():
 
 samples_per_epoch = 0
 for ca in caps:
-    samples_per_epoch += len(ca.split()) - 1
+        samples_per_epoch += len(ca.split()) - 1
 
 def data_generator(batch_size = 32):
         partial_caps = []
@@ -180,7 +184,7 @@ def data_generator(batch_size = 32):
         images = []
 
         df = pd.read_csv('flickr8k_training_dataset.txt', delimiter='\t')
-        #df = df.sample(frac=1)
+        df = df.sample(frac=1)
         iter = df.iterrows()
         c = []
         imgs = []
@@ -222,7 +226,33 @@ def data_generator(batch_size = 32):
                         images = []
                         count = 0
 
-# print(z)
+
+
+
+file = open("accuracy.txt", 'w')
+file1 = open("loss.txt", 'w')
+# recording acc and loss after each batch
+class PlotLosses(Callback):
+
+    def __init__(self, model, N):
+        self.model = model
+        self.N = N
+        self.batch = 0
+
+    def on_batch_end(self, batch, logs={}):
+
+        file.write("%s\n" %logs.get('acc') )
+        file1.write("%s\n" %logs.get('loss'))
+        if self.batch % self.N == 0:
+            name = 'weights_after_batches/weights%08d.h5' % batch
+            self.model.save_weights(name)
+        self.batch += 1
+
+    def on_epoch_end(self, epoch, logs={}):
+        file.close()
+        file1.close()
+
+
 
 
 embedding_size = 300
@@ -248,15 +278,17 @@ final_model = Sequential([
                         Activation('softmax')
                     ])
 
+
 #final_model = Model(inputs=[image_model, caption_model], outputs=final_mode)
 final_model.compile(loss='categorical_crossentropy', optimizer=RMSprop(), metrics=['accuracy'])
 
 final_model.summary()
-final_model.fit_generator(data_generator(batch_size=256), steps_per_epoch=1000,
-                                              nb_epoch=1, callbacks=0
+final_model.fit_generator(data_generator(batch_size=512), samples_per_epoch=samples_per_epoch, callbacks=[PlotLosses(final_model, 10)],
+                                              nb_epoch=1
                                               )
-final_model.save_weights("model.h5")
-final_model.load_weights("model.h5")
+
+model.save("best_weight.hdf5", overwrite= True)
+
 
 
 def predict_captions(image):
