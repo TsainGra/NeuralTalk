@@ -19,6 +19,7 @@ from keras.models import Model
 from keras.models import load_model
 from keras.utils import plot_model
 from IPython.display import clear_output
+
 token = 'Flickr8k_text/Flickr8k.token.txt'
 captions = open(token, 'r').read().strip().split('\n')
 d = {}
@@ -77,12 +78,14 @@ hidden_layer = model.layers[-2].output
 
 model_new = Model(new_input, hidden_layer)
 
+#encoding the image using InceptionV3
 def encode(image):
     image = preprocess(image)
     temp_enc = model_new.predict(image)
     temp_enc = np.reshape(temp_enc, temp_enc.shape[1])
     return temp_enc
 encoding_train = {}
+#encoding the images and saving in pickle
 # for img in tqdm(train_img):
 #     encoding_train[img[len(images):]] = encode(img)
 #
@@ -135,7 +138,7 @@ unique = list(set(unique))
 #unique = pickle.load(open('unique.p', 'rb'))
 
 #len(unique)
-
+# making dicitionary for easy conversion of word to unique number and vice versa
 word2idx = {val:index for index, val in enumerate(unique)}
 word2idx['<start>']
 idx2word = {index:val for index, val in enumerate(unique)}
@@ -153,6 +156,7 @@ vocab_size = len(unique)
 f = open('flickr8k_training_dataset.txt', 'w')
 f.write("image_id\tcaptions\n")
 
+# creating table in file <image_id>\t<caption>
 for key, val in train_d.items():
     for i in val:
         f.write(key[len(images):] + "\t" + "<start> " + i +" <end>" + "\n")
@@ -161,18 +165,11 @@ f.close()
 
 df = pd.read_csv('flickr8k_training_dataset.txt', delimiter='\t')
 
-len(df)
 
 c = [i for i in df['captions']]
-len(c)
+
 
 imgs = [i for i in df['image_id']]
-
-a = c[-1]
-a, imgs[-1]
-
-for i in a.split():
-    print (i, "=>", word2idx[i])
 
 samples_per_epoch = 0
 for ca in caps:
@@ -268,8 +265,7 @@ caption_model = Sequential([
            TimeDistributed(Dense(300))
                     ])
 
-#conc = concatenate([image_model, caption_model], axis=1)
-# print(type([image_model, caption_model]))
+# merging the models
 
 final_model = Sequential([
                         Merge([image_model, caption_model], mode='concat', concat_axis=1),
@@ -279,14 +275,12 @@ final_model = Sequential([
                     ])
 
 
-#final_model = Model(inputs=[image_model, caption_model], outputs=final_mode)
 final_model.compile(loss='categorical_crossentropy', optimizer=RMSprop(), metrics=['accuracy'])
 
 final_model.summary()
 final_model.fit_generator(data_generator(batch_size=512), samples_per_epoch=samples_per_epoch, callbacks=[PlotLosses(final_model, 10)],
-                                              nb_epoch=1
-                                              )
-
+                                         nb_epoch=1)
+# save the best weight after training
 model.save("best_weight.hdf5", overwrite= True)
 
 
