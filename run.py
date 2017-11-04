@@ -276,12 +276,14 @@ final_model = Sequential([
 
 
 final_model.compile(loss='categorical_crossentropy', optimizer=RMSprop(), metrics=['accuracy'])
-
+"""
 final_model.summary()
 final_model.fit_generator(data_generator(batch_size=512), samples_per_epoch=samples_per_epoch, callbacks=[PlotLosses(final_model, 10)],
                                          nb_epoch=1)
 # save the best weight after training
 model.save("best_weight.hdf5", overwrite= True)
+""""
+final_model.load_weights() # Fill-in file path here
 
 
 
