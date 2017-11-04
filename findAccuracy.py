@@ -33,7 +33,7 @@ Following code does not work
 arr_ind = []
 arr_val = []
 for i in range(0,len(values)):
-	if i%100 == 0:
+	if i%1000 == 0:
 		arr_ind.append(i)
 		arr_val.append(values[i][0])
 
