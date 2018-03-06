@@ -5,11 +5,13 @@ Features are extracted using [InceptionV3](https://www.kaggle.com/google-brain/i
 
 ## Architecture
 ![](images/InceptionV3.png)
-[B](images/Architecture.png)
+![](images/Architecture.png)
 
 ## Output
-[C](images/output.png)
-[D](images/dog.jpg)
+![](images/output.png)
+![](images/dog.jpg)
+
+output:"Three puppies are sitting on a couch".
 
 ## **Dependecies**
 [Keras](https://github.com/fchollet/keras)
