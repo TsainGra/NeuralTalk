@@ -4,7 +4,7 @@
 Features are extracted using [InceptionV3](https://www.kaggle.com/google-brain/inception-v3), and predictions are made using [beam search](https://en.wikipedia.org/wiki/Beam_search).
 
 ## Architecture
-[A](images/InceptionV3.png)
+![](images/InceptionV3.png)
 [B](images/Architecture.png)
 
 ## Output
