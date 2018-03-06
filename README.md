@@ -9,10 +9,8 @@ Features are extracted using [InceptionV3](https://www.kaggle.com/google-brain/i
 
 ## Output
 ![](images/output.png)
-![](images/dog.jpg)
-
-output:"Three puppies are sitting on a couch".
 
 ## **Dependecies**
 [Keras](https://github.com/fchollet/keras)
+
 [Numpy](https://docs.scipy.org/doc/numpy-1.13.0/user/install.html)
