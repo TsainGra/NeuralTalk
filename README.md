@@ -4,12 +4,12 @@
 Features are extracted using [InceptionV3](https://www.kaggle.com/google-brain/inception-v3), and predictions are made using [beam search](https://en.wikipedia.org/wiki/Beam_search).
 
 ## Architecture
-[](images/InceptionV3.png)
-[](images/Architecture.png)
+[A](images/InceptionV3.png)
+[B](images/Architecture.png)
 
 ## Output
-[](images/output.png)
-[](images/dog.jpg)
+[C](images/output.png)
+[D](images/dog.jpg)
 
 ## **Dependecies**
 [Keras](https://github.com/fchollet/keras)
