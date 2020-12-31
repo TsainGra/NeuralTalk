@@ -1,5 +1,5 @@
 # NeuralTalk
-[Next Tech Lab](http://nextech.io/)'s NeuralTalk - an image captioning model trained using Flickr8k dataset, and programmed in Python and Keras.  
+[Next Tech Lab](http://nextech.io/)'s NeuralTalk — an image captioning model trained using Flickr8k dataset, and programmed in Python and Keras.  
 
 Features are extracted using [InceptionV3](https://www.kaggle.com/google-brain/inception-v3), and predictions are made using [beam search](https://en.wikipedia.org/wiki/Beam_search).
 
